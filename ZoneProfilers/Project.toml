@@ -1,0 +1,10 @@
+name = "ZoneProfilers"
+uuid = "402d8ed9-92af-47cb-aae4-ae215e44b74b"
+authors = ["nhz2 <nhz2@cornell.edu>"]
+version = "0.1.0"
+
+[compat]
+julia = "1.12"
+
+[workspace]
+projects = ["test"]
