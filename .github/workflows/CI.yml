@@ -48,8 +48,13 @@ jobs:
         shell: julia --color=yes {0}
         run: |
           using Pkg
-          Pkg.activate("ZoneProfilerTracy/test")
-          Pkg.develop(path="ZoneProfilers")
-          Pkg.develop(path="ZoneProfilerTracy")
-          Pkg.develop(path="ZoneProfilerTracy/test/TestPkg")
+          Pkg.activate(;temp=true)
+          # force it to use this PR's version of the package
+          ENV["JULIA_PKG_DEVDIR"]= mktempdir()
+          Pkg.develop(unique([
+              (;path="ZoneProfilers"),
+              (;path="ZoneProfilerTracy"),
+              (;path="ZoneProfilerTracy/test/TestPkg"),
+            ]))
+          Pkg.update()
           Pkg.test("ZoneProfilerTracy")
