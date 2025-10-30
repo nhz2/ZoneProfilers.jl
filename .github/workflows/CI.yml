@@ -48,8 +48,18 @@ jobs:
         shell: julia --color=yes {0}
         run: |
           using Pkg
-          Pkg.activate("ZoneProfilerTracy/test")
-          Pkg.develop(path="ZoneProfilers")
-          Pkg.develop(path="ZoneProfilerTracy")
-          Pkg.develop(path="ZoneProfilerTracy/test/TestPkg")
+          Pkg.activate(;temp=true)
+          # force it to use this PR's version of the package
+          ENV["JULIA_PKG_DEVDIR"]= mktempdir()
+          local_pkg_paths = unique(["ZoneProfilers", "ZoneProfilerTracy", "ZoneProfilerTracy/test/TestPkg"])
+          # copy out the packages to avoid workspace
+          new_dir = mktempdir()
+          devs = NamedTuple[]
+          for path in local_pkg_paths
+            dest = joinpath(new_dir, basename(path))
+            cp(path, dest)
+            push!(devs, (;path=joinpath(new_dir, dest)))
+          end
+          Pkg.develop(devs)
+          Pkg.update()
           Pkg.test("ZoneProfilerTracy")
