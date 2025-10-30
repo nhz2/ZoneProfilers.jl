@@ -1,0 +1,7 @@
+name = "TestPkg"
+uuid = "ca9a62f7-276b-467a-b2c2-a144e0b54646"
+version = "0.1.0"
+authors = ["nhz2 <nhz2@cornell.edu>"]
+
+[deps]
+ZoneProfilers = "402d8ed9-92af-47cb-aae4-ae215e44b74b"

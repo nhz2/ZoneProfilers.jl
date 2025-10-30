@@ -1,0 +1,8 @@
+[deps]
+Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+TestPkg = "ca9a62f7-276b-467a-b2c2-a144e0b54646"
+TracyProfiler_jll = "0c351ed6-8a68-550e-8b79-de6f926da83c"
+ZoneProfilerTracy = "e1916cde-5bbf-401f-b637-13ab0c87f0f0"
+ZoneProfilers = "402d8ed9-92af-47cb-aae4-ae215e44b74b"

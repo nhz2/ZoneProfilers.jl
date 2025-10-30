@@ -1,0 +1,16 @@
+name = "ZoneProfilerTracy"
+uuid = "e1916cde-5bbf-401f-b637-13ab0c87f0f0"
+version = "0.1.0-dev"
+authors = ["Nathan Zimmerberg <nzimmerberg@gmail.com>"]
+
+[workspace]
+projects = ["test"]
+
+[deps]
+LibTracyClient_jll = "ad6e5548-8b26-5c9f-8ef3-ef0ad883f3a5"
+ZoneProfilers = "402d8ed9-92af-47cb-aae4-ae215e44b74b"
+
+[compat]
+LibTracyClient_jll = "0.9.1"
+ZoneProfilers = "0.1"
+julia = "1.10"

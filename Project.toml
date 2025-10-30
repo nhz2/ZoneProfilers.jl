@@ -1,0 +1,7 @@
+[workspace]
+projects = ["ZoneProfilers", "ZoneProfilerTracy"]
+
+[deps]
+TracyProfiler_jll = "0c351ed6-8a68-550e-8b79-de6f926da83c"
+ZoneProfilerTracy = "e1916cde-5bbf-401f-b637-13ab0c87f0f0"
+ZoneProfilers = "402d8ed9-92af-47cb-aae4-ae215e44b74b"

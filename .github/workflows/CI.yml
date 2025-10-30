@@ -16,7 +16,8 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - '1'
+          - '1.10'
+          - '1.11'
           - 'pre'
         os:
           - ubuntu-latest
@@ -36,12 +37,17 @@ jobs:
           arch: ${{ matrix.arch }}
           show-versioninfo: true
           project: ZoneProfilers
-      - uses: julia-actions/cache@v2
-      - uses: julia-actions/julia-buildpkg@v1
-      - name: Run the tests
+      - name: Run the ZoneProfilers tests
         shell: julia --color=yes {0}
         run: |
           using Pkg
           Pkg.Registry.update()
           Pkg.activate("ZoneProfilers")
+          Pkg.test()
+      - name: Run the ZoneProfilerTracy tests
+        shell: julia --color=yes {0}
+        run: |
+          using Pkg
+          Pkg.activate("ZoneProfilerTracy")
+          Pkg.develop(path="ZoneProfilers")
           Pkg.test()
