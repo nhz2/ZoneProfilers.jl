@@ -48,6 +48,8 @@ jobs:
         shell: julia --color=yes {0}
         run: |
           using Pkg
-          Pkg.activate("ZoneProfilerTracy")
+          Pkg.activate("ZoneProfilerTracy/test")
           Pkg.develop(path="ZoneProfilers")
-          Pkg.test()
+          Pkg.develop(path="ZoneProfilerTracy")
+          Pkg.develop(path="ZoneProfilerTracy/test/TestPkg")
+          Pkg.test("ZoneProfilerTracy")

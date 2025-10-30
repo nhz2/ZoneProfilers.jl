@@ -1,7 +1,7 @@
 using Test, ZoneProfilers, ZoneProfilerTracy
 using Aqua: Aqua
 
-Aqua.test_all(ZoneProfilerTracy)
+Aqua.test_all(ZoneProfilerTracy; persistent_tasks = false)
 
 # These tests have been ported from https://github.com/topolarity/Tracy.jl/blob/v0.1.4/test/runtests.jl
 # Tracy.jl was MIT licensed and was written by Cody Tapscott <cody.tapscott@juliahub.com>, Kristoffer Carlsson <kristoffer.carlsson@juliahub.com>, and Elliot Saba <staticfloat@gmail.com>
