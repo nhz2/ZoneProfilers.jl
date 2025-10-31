@@ -432,3 +432,4 @@ end
     @test plot!(NullProfiler(), :test, 1.0) === nothing
 end
 
+include("test-symbol-lifetimes.jl")
