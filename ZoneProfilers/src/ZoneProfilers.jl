@@ -43,6 +43,12 @@ end
 get_tracy_color(color::UInt32)::UInt32 = color
 
 include("source-location.jl")
+
+# GC Rooting for source locations
+# Unclear if this is needed, since the srclocs are in the expressions returned by the macros.
+const srcloc_gc_root_lock = ReentrantLock()
+const srcloc_gc_root = SourceLocation[]
+
 include("macro-magic.jl")
 
 """
