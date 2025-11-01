@@ -112,6 +112,9 @@ macro zone_begin(profiler, kwargs...)
     function_name = string(nameof(__module__)) # For now use module name. TODO A future julia version might support this.
     (;name::Union{String, Nothing}, color::UInt32, active::Any) = _process_zone_kwargs(kwargs)
     srcloc = SourceLocation(__source__, function_name, name, color)
+    lock(srcloc_gc_root_lock) do
+        push!(srcloc_gc_root, srcloc)
+    end
     :(unsafe_zone_begin!($(esc(profiler)), $(srcloc), $(esc(active))))
 end
 
@@ -166,6 +169,9 @@ macro zone(profiler, otherargs...)
     end
     (;name::Union{String, Nothing}, color::UInt32, active::Any) = _process_zone_kwargs(otherargs[1:end-1])
     srcloc = SourceLocation(__source__, function_name, name, color)
+    lock(srcloc_gc_root_lock) do
+        push!(srcloc_gc_root, srcloc)
+    end
     quote
         unsafe_zone_begin!($(esc(profiler)), $(srcloc), $(esc(active)))
         try
