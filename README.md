@@ -10,8 +10,6 @@ ZoneProfilers provides utilities to markup code for logging and timing.
 
 ZoneProfilerTracy provides a wrapper of [the Tracy C library v0.9.1](https://github.com/wolfpld/tracy/releases/tag/v0.9.1) for profiling marked up code.
 
-**Beyond Performance Profiling**: With the Tracy GUI, ZoneProfilers serves as a powerful alternative to printf debugging, especially in multithreaded contexts where terminal output becomes jumbled and hard to follow. Messages, zone annotations, and plot data appear in a clean, timeline-based interface that makes debugging complex parallel algorithms much more manageable.
-
 ZoneProfilers uses an explicit profiler parameter to be passed through your call chain:
 
 ```julia
@@ -78,7 +76,9 @@ run_simulation(;profiler)  # Full instrumentation
 
 ## Important limitations
 
-Every instance of text string data passed to the profiler can't be longer that 64 KB.
+Every instance of string or symbol data passed to the profiler can't be longer that 64 KB.
+
+`Symbol`s passed to the profiler are required to have stable pointers for the rest of the lifetime of the process. Currently in Julia `Symbol`s are not garbage collected, but this might change in a future version of the language. To be future proof you must ensure there is a global reference to a symbol before passing it to a profiler.
 
 The name passed to the `@zone` macros is limited to 511 bytes.
 Source file path lengths are limited to 2047 bytes.
