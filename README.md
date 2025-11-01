@@ -76,7 +76,7 @@ run_simulation(;profiler)  # Full instrumentation
 
 ## Important limitations
 
-Every instance of string or symbol data passed to the profiler can't be longer that 64 KB.
+Every instance of string or symbol data passed to the profiler can't be longer than 64 KB.
 
 `Symbol`s passed to the profiler are required to have stable pointers for the rest of the lifetime of the process. Currently in Julia `Symbol`s are not garbage collected, but this might change in a future version of the language. To be future proof you must ensure there is a global reference to a symbol before passing it to a profiler.
 
