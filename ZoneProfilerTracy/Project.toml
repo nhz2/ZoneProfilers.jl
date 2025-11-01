@@ -1,6 +1,6 @@
 name = "ZoneProfilerTracy"
 uuid = "e1916cde-5bbf-401f-b637-13ab0c87f0f0"
-version = "0.1.0-dev"
+version = "0.1.0"
 authors = ["Nathan Zimmerberg <nzimmerberg@gmail.com>"]
 
 [workspace]
