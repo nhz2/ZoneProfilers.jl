@@ -119,6 +119,6 @@ for i in 1:10
     end
 end
 
-sleep(0.5)
-
 ZoneProfilers.profiler_smoke_test(profiler)
+
+sleep(0.5)
