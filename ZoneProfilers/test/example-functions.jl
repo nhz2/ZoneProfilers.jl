@@ -23,4 +23,11 @@ function zone_begin_test1(;profiler=NullProfiler())
     @zone_begin profiler name= :test1d active= active_flag color= :blue
 end
 
+function zone_function_name(;profiler=NullProfiler())
+    @zone profiler sqrt(2.0)
+    @zone profiler name="mynothing" Nothing()
+    @zone profiler name="mysqrt" Base.sqrt(2.0)
+    @zone profiler "foo"
+end
+
 end  # module TestFunctions
