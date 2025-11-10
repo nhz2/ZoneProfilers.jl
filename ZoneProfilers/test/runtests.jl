@@ -459,4 +459,7 @@ end
     @test plot!(NullProfiler(), :test, 1.0) === nothing
 end
 
+ZoneProfilers.profiler_smoke_test(NullProfiler())
+ZoneProfilers.profiler_smoke_test(TestProfiler())
+
 include("test-symbol-lifetimes.jl")

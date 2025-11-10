@@ -3,6 +3,8 @@ using Aqua: Aqua
 
 Aqua.test_all(ZoneProfilerTracy; persistent_tasks = false)
 
+ZoneProfilers.profiler_smoke_test(TracyProfiler())
+
 # These tests have been ported from https://github.com/topolarity/Tracy.jl/blob/v0.1.4/test/runtests.jl
 # Tracy.jl was MIT licensed and was written by Cody Tapscott <cody.tapscott@juliahub.com>, Kristoffer Carlsson <kristoffer.carlsson@juliahub.com>, and Elliot Saba <staticfloat@gmail.com>
 # Since the @zone macro doesn't support annotating function those tests have been removed.
@@ -70,9 +72,15 @@ else
         end
 
         all_names_recorded = Set([z.name for z in zones])
-        all_names_expected = Set(["test tracepoint", "test exception", "timing",
-                                  "SLP", "SROA", "Inlining", "rainbow outer", "rainbow inner",
-                                  "conditionally disabled"])
+        all_names_expected = Set([
+            "test tracepoint", "test exception", "timing",
+            "SLP", "SROA", "Inlining", "rainbow outer", "rainbow inner",
+            "conditionally disabled",
+            "sleep",
+            "zone name",
+            "zone name and color",
+            "change stuff",
+        ])
         @test all_names_recorded == all_names_expected
 
         @testset "check zone data" begin
@@ -104,6 +112,10 @@ else
                 elseif zone.name == "conditionally disabled"
                     @test zone.src_line == zone_lines[zone.name]
                     @test zone.counts == "5"
+                elseif zone.name ∈ [
+                    "sleep", "zone name", "zone name and color", "change stuff",
+                ]
+                    # part of smoke test
                 else
                     error("unknown zone.name = $(zone.name)")
                 end
