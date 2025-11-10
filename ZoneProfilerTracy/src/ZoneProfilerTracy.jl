@@ -54,7 +54,7 @@ function TracyProfiler(jll::Module)
     if isnothing(tracy_port)
         run(`$(jll.tracy()) -a 127.0.0.1`; wait=false)
     else
-        run(`$(jll.tracy()) -a 127.0.0.1 -p $(ENV["TRACY_PORT"])`; wait=false)
+        run(`$(jll.tracy()) -a 127.0.0.1 -p $(tracy_port)`; wait=false)
     end
     profiler = TracyProfiler()
     wait_for_connection(profiler)
