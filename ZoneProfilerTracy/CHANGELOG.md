@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## [v0.1.1](https://github.com/nhz2/ZoneProfilers.jl/tree/ZoneProfilerTracy-v0.1.1) - 2025-11-10
+
+- Added a tracy GUI and profiler quick start: `profiler = TracyProfiler(TracyProfiler_jll)`. [#4](https://github.com/nhz2/ZoneProfilers.jl/pull/4)
+
 ## [v0.1.0](https://github.com/nhz2/ZoneProfilers.jl/tree/ZoneProfilerTracy-v0.1.0) - 2025-11-01
 
 ### Added
