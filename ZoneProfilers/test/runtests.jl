@@ -175,6 +175,33 @@ end
 
 @testset "@zone macro" begin
     profiler = TestProfiler()
+    # Test that zone_function_name generates the expected messages
+    @test TestFunctions.zone_function_name(;profiler) == "foo"
+    messages = profiler.messages[:main]
+    i = 0
+    line = 26
+    @test messages[i+=1].type == :unsafe_zone_begin!
+    @test repr(messages[i].srcloc) == repr(
+        SourceLocation(example_linenode(line+=1), "sqrt", nothing, 0x00000000)
+    )
+    @test messages[i+=1].type == :zone_end!
+    @test messages[i+=1].type == :unsafe_zone_begin!
+    @test repr(messages[i].srcloc) == repr(
+        SourceLocation(example_linenode(line+=1), "Nothing", "mynothing", 0x00000000)
+    )
+    @test messages[i+=1].type == :zone_end!
+    @test messages[i+=1].type == :unsafe_zone_begin!
+    @test repr(messages[i].srcloc) == repr(
+        SourceLocation(example_linenode(line+=1), "Base.sqrt", "mysqrt", 0x00000000)
+    )
+    @test messages[i+=1].type == :zone_end!
+    @test messages[i+=1].type == :unsafe_zone_begin!
+    @test repr(messages[i].srcloc) == repr(
+        SourceLocation(example_linenode(line+=1), "TestFunctions", nothing, 0x00000000)
+    )
+    @test messages[i+=1].type == :zone_end!
+
+    profiler = TestProfiler()
     
     # Test basic @zone usage
     result = @zone profiler begin

@@ -163,9 +163,16 @@ end
 See also: [`@zone_begin`](@ref), [`zone_end!`](@ref), [`TracyProfiler`](@ref), [`NullProfiler`](@ref)
 """
 macro zone(profiler, otherargs...)
-    function_name = string(nameof(__module__)) # For now use module name. TODO A future julia version might support this.
     if iszero(length(otherargs))
         error("usage: @zone profiler [optional keyword arguments] <expression>")
+    end
+    expr = last(otherargs)
+    # Try to use the function name from the expression
+    # otherwise use the module name
+    function_name = if (expr isa Expr) && expr.head === :call && !isempty(expr.args)
+        string(first(expr.args))
+    else
+        string(nameof(__module__))
     end
     (;name::Union{String, Nothing}, color::UInt32, active::Any) = _process_zone_kwargs(otherargs[1:end-1])
     srcloc = SourceLocation(__source__, function_name, name, color)
