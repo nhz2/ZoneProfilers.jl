@@ -50,7 +50,12 @@ function TracyProfiler(name::Symbol=:main)
 end
 # Convenience constructor that also starts the GUI
 function TracyProfiler(jll::Module)
-    run(`$(jll.tracy()) -a 127.0.0.1 -p $(ENV["TRACY_PORT"])`; wait=false)
+    tracy_port = get(ENV, "TRACY_PORT", nothing)
+    if isnothing(tracy_port)
+        run(`$(jll.tracy()) -a 127.0.0.1`; wait=false)
+    else
+        run(`$(jll.tracy()) -a 127.0.0.1 -p $(ENV["TRACY_PORT"])`; wait=false)
+    end
     profiler = TracyProfiler()
     wait_for_connection(profiler)
     profiler

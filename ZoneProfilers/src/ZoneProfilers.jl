@@ -27,6 +27,8 @@ export frame_mark_end!
 
 export plot!
 
+# public profiler_smoke_test
+
 include("colors.jl")
 
 """
@@ -511,5 +513,7 @@ end
 function app_info!(profiler::TestProfiler, text::String)::Nothing
     nothing
 end
+
+include("smoke-test.jl")
 
 end # module ZoneProfilers
