@@ -16,10 +16,7 @@ ZoneProfilers uses an explicit profiler parameter to be passed through your call
 # ZoneProfilers approach - explicit profiler parameter
 using ZoneProfilers
 function simulate_physics(; profiler=NullProfiler())
-    @zone profiler name="physics" begin
-        # simulation code
-        sleep(0.01)
-    end
+    @zone profiler sleep(0.01)
 end
 
 function run_simulation(; profiler=NullProfiler())
@@ -34,13 +31,10 @@ end
 run_simulation()  # Uses NullProfiler(), compiled away
 
 # Development: full profiling
+# Use TracyProfiler_jll to run the tracy GUI
 import TracyProfiler_jll
-run(TracyProfiler_jll.tracy(); wait=false) # Launch the profiler GUI
-
 using ZoneProfilerTracy: TracyProfiler
-profiler=TracyProfiler()
-# Wait for Tracy viewer connection for up to 100 seconds
-wait_for_connection(profiler; deadline= 100*10^9 + time_ns())
+profiler = TracyProfiler(TracyProfiler_jll)
 
 run_simulation(;profiler)  # Full instrumentation
 ```
