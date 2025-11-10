@@ -4,7 +4,8 @@ using LibTracyClient_jll: libTracyClient
 using ZoneProfilers:
     SourceLocation,
     Profiler,
-    get_tracy_color
+    get_tracy_color,
+    wait_for_connection
 
 import ZoneProfilers:
     new_stack,
@@ -34,6 +35,9 @@ end
 
 A wrapper of the Tracy C library for profiling marked up code.
 
+A convenience constructor `TracyProfiler(TracyProfiler_jll)`
+will start up the tracy GUI.
+
 Documentation: https://github.com/nhz2/ZoneProfilers.jl
 """
 mutable struct TracyProfiler <: Profiler
@@ -43,6 +47,13 @@ mutable struct TracyProfiler <: Profiler
 end
 function TracyProfiler(name::Symbol=:main)
     TracyProfiler(TracyCZoneCtx[], name, false)
+end
+# Convenience constructor that also starts the GUI
+function TracyProfiler(jll::Module)
+    run(`$(jll.tracy()) -a 127.0.0.1 -p $(ENV["TRACY_PORT"])`; wait=false)
+    profiler = TracyProfiler()
+    wait_for_connection(profiler)
+    profiler
 end
 
 function new_stack(profiler::TracyProfiler, name::Symbol)

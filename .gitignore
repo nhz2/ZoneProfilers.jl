@@ -1,4 +1,7 @@
-tracy/*
-prefix/*
-TracyFiberClient/build/*
-TracyFiberClient/products/*
+#Mac OS X
+*.DS_Store
+
+#VS Code
+/.vscode/
+
+*.cov
