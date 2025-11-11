@@ -6,9 +6,9 @@ A Julia interface for the Tracy instrumentation-based profiler, designed for mul
 
 ## Overview
 
-ZoneProfilers provides utilities to markup code for logging and timing.
+ZoneProfilers provides utilities to mark up code for logging and timing.
 
-ZoneProfilerTracy provides a wrapper of [the Tracy C library v0.9.1](https://github.com/wolfpld/tracy/releases/tag/v0.9.1) for profiling marked up code.
+ZoneProfilerTracy provides a wrapper of [the Tracy C library v0.9.1](https://github.com/wolfpld/tracy/releases/tag/v0.9.1) for profiling marked-up code.
 
 ZoneProfilers uses an explicit profiler parameter to be passed through your call chain:
 
@@ -58,7 +58,7 @@ run_simulation(;profiler)  # Full instrumentation
 
 ### Zone Modification
 - `zone_color!(profiler, color)` - Set zone color at runtime
-- `zone_text!(profiler, text)` - Add a line of text to current zone
+- `zone_text!(profiler, text)` - Add a line of text to the current zone
 
 ### Frame Marking
 - `frame_mark!(profiler, [name])` - Mark frame boundary
@@ -70,17 +70,19 @@ run_simulation(;profiler)  # Full instrumentation
 
 ## Important limitations
 
+In addition, `ZoneProfilerTracy` is not compatible with `julia` built with the `WITH_TRACY=1` make option.
+
 Every instance of string or symbol data passed to the profiler can't be longer than 64 KB.
 
-`Symbol`s passed to the profiler are required to have stable pointers for the rest of the lifetime of the process. Currently in Julia `Symbol`s are not garbage collected, but this might change in a future version of the language. To be future proof you must ensure there is a global reference to a symbol before passing it to a profiler.
+`Symbol`s passed to the profiler are required to have stable pointers for the rest of the lifetime of the process. Currently, in Julia, `Symbol`s are not garbage collected, but this might change in a future version of the language. To be future-proof, you must ensure there is a global reference to a symbol before passing it to a profiler.
 
 The name passed to the `@zone` macros is limited to 511 bytes.
 Source file path lengths are limited to 2047 bytes.
 
-Due to the missmatch between how multithreading works in Julia vs C++, currently the GUI display of context switches are not accurate.
-The "Draw context switches" option should be disabled in the Tracy GUI.
+Due to the mismatch between how multithreading works in Julia vs C++, currently, the GUI display of context switches is not accurate.
+The "Draw context switches" option should be disabled in the Tracy GUI. 
 
-Currently there is no support for callstack logging. Help on supporting this would be greatly appreciated.
+Currently, there is no support for callstack logging. Help in supporting this would be greatly appreciated.
 
 A connected tracy server can read arbitrary memory in the profiled process, so only use ZoneProfilerTracy in trusted environments.
 
@@ -124,7 +126,7 @@ Zones can be nested to form a stack:
 end
 ```
 
-When using the `@zone` macro `name` and `color` must be literals.
+When using the `@zone` macro, `name` and `color` must be literals.
 Use `zone_color!` to set the color of a zone at runtime.
 Use `zone_text!` to append a line of text to the zone annotation.
 
@@ -137,7 +139,7 @@ Use `zone_text!` to append a line of text to the zone annotation.
         if u < 0.5
             # make the zone red and note the value of `u`
             zone_color!(profiler, 0xFF0000)
-            # Gaurd with `zone_active(profiler) &&` to avoid constructing the string when not profiling.
+            # Guard with `zone_active(profiler) &&` to avoid constructing the string when not profiling.
             zone_active(profiler) && zone_text!(profiler, "Rare event, u = $(u)")
         end
         sleep(0.1)
@@ -197,13 +199,13 @@ for step in 1:1000
         plot!(profiler, :particle_count, Float64(length(particles)))
     end
     
-    frame_mark!(profiler) # mark the end of a step and the begining of the next step.
+    frame_mark!(profiler) # mark the end of a step and the beginning of the next step.
 end
 ```
 
 ![frames](images/frames.png)
 
-Frame marking and plotting are safe to do concurrently to a shared profiler.
+Frame marking and plotting are safe to do concurrently with a shared profiler.
 
 ### Conditional Profiling
 
@@ -217,7 +219,7 @@ const PROFILING_ENABLED = false
     # expensive_computation()
 end
 
-# Or use dynamic conditions, for example only profile on Monday
+# Or use dynamic conditions, for example, only profile on Monday
 using Dates
 should_profile() = Dates.dayofweek(Dates.now()) == Dates.Monday
 
@@ -227,7 +229,7 @@ end
 ```
 
 The expression in the zone is run if the profiling is active or not.
-The function passed to `active` will not be evaluated if the profiler is a `NullProfiler` for even less overhead.
+The function passed to `active` will not be evaluated if the profiler is a `NullProfiler`, for even less overhead.
 
 ## See Also
 
