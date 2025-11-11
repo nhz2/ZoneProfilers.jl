@@ -1,6 +1,6 @@
 name = "ZoneProfilers"
 uuid = "402d8ed9-92af-47cb-aae4-ae215e44b74b"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Nathan Zimmerberg <nzimmerberg@gmail.com>"]
 
 [workspace]

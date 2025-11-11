@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-- Added `@zone_repr` and `@zone_show` convenience macros.
+## [v0.1.2](https://github.com/nhz2/ZoneProfilers.jl/tree/ZoneProfilers-v0.1.2) - 2025-11-11
+
+- Added `@zone_repr` and `@zone_show` convenience macros. [#7](https://github.com/nhz2/ZoneProfilers.jl/pull/7)
 
 ## [v0.1.1](https://github.com/nhz2/ZoneProfilers.jl/tree/ZoneProfilers-v0.1.1) - 2025-11-10
 
