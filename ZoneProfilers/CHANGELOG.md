@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Added `@zone_repr` and `@zone_show` convenience macros.
+
 ## [v0.1.1](https://github.com/nhz2/ZoneProfilers.jl/tree/ZoneProfilers-v0.1.1) - 2025-11-10
 
 - Added `profiler_smoke_test` to help test `Profiler` implementations. [#5](https://github.com/nhz2/ZoneProfilers.jl/pull/5)
