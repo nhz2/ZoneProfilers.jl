@@ -15,6 +15,8 @@ export message!
 
 export @zone
 export @zone_begin
+export @zone_show
+export @zone_repr
 export zone_end!
 export zone_active
 export zone_color!

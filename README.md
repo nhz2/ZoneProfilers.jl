@@ -59,6 +59,8 @@ run_simulation(;profiler)  # Full instrumentation
 ### Zone Modification
 - `zone_color!(profiler, color)` - Set zone color at runtime
 - `zone_text!(profiler, text)` - Add a line of text to the current zone
+- `@zone_show profiler vars...` - Convenience macro to display variable names and values as zone text
+- `@zone_repr profiler vars...` - Convenience macro to display repr of variables as zone text
 
 ### Frame Marking
 - `frame_mark!(profiler, [name])` - Mark frame boundary
@@ -129,6 +131,10 @@ end
 When using the `@zone` macro, `name` and `color` must be literals.
 Use `zone_color!` to set the color of a zone at runtime.
 Use `zone_text!` to append a line of text to the zone annotation.
+For convenience, use `@zone_show` to display variable names and values, or `@zone_repr` to display just the repr output.
+
+The `@zone_show` and `@zone_repr` macros are particularly useful because expressions are only evaluated when the zone is active,
+avoiding performance overhead and side effects when profiling is disabled.
 
 ```julia
 @zone profiler name="physics_update" begin
@@ -141,6 +147,10 @@ Use `zone_text!` to append a line of text to the zone annotation.
             zone_color!(profiler, 0xFF0000)
             # Guard with `zone_active(profiler) &&` to avoid constructing the string when not profiling.
             zone_active(profiler) && zone_text!(profiler, "Rare event, u = $(u)")
+            # Or use @zone_show as a convenience - expression is only evaluated when zone is active
+            @zone_show profiler u
+            # Or use @zone_repr to show just the repr without the variable name
+            @zone_repr profiler u
         end
         sleep(0.1)
     end

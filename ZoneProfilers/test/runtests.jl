@@ -365,6 +365,92 @@ end
     @test zone_color!(null_profiler, :red) === nothing
 end
 
+@testset "zone_show macro" begin
+    profiler = TestProfiler()
+    x = 42
+    @zone profiler begin
+        @test isnothing(@zone_show(profiler, x))
+    end
+    messages = profiler.messages[:main]
+    @test messages[2].type == :zone_text!
+    @test messages[2].text == "x = 42"
+
+    profiler = TestProfiler()
+    x = 42
+    y = 43
+    @zone profiler begin
+        @test isnothing(@zone_show(profiler, x, y))
+    end
+    messages = profiler.messages[:main]
+    @test messages[2].type == :zone_text!
+    @test messages[2].text == "x = 42"
+    @test messages[3].type == :zone_text!
+    @test messages[3].text == "y = 43"
+
+    profiler = TestProfiler()
+    @zone profiler begin
+        @test isnothing(@zone_show(profiler))
+    end
+    messages = profiler.messages[:main]
+    @test messages[2].type == :zone_end!
+
+    profiler = TestProfiler()
+    @zone profiler active=false begin
+        @test isnothing(@zone_show(profiler, error("should not run")))
+    end
+    messages = profiler.messages[:main]
+    @test messages[2].type == :zone_end!
+
+    profiler = NullProfiler()
+    @zone profiler begin
+        @test isnothing(@zone_show(profiler, error("should not run")))
+    end
+
+end
+
+@testset "zone_repr macro" begin
+    profiler = TestProfiler()
+    x = 42
+    @zone profiler begin
+        @test isnothing(@zone_repr(profiler, x))
+    end
+    messages = profiler.messages[:main]
+    @test messages[2].type == :zone_text!
+    @test messages[2].text == "42"
+
+    profiler = TestProfiler()
+    x = 42
+    y = 43
+    @zone profiler begin
+        @test isnothing(@zone_repr(profiler, x, y))
+    end
+    messages = profiler.messages[:main]
+    @test messages[2].type == :zone_text!
+    @test messages[2].text == "42"
+    @test messages[3].type == :zone_text!
+    @test messages[3].text == "43"
+
+    profiler = TestProfiler()
+    @zone profiler begin
+        @test isnothing(@zone_repr(profiler))
+    end
+    messages = profiler.messages[:main]
+    @test messages[2].type == :zone_end!
+
+    profiler = TestProfiler()
+    @zone profiler active=false begin
+        @test isnothing(@zone_repr(profiler, error("should not run")))
+    end
+    messages = profiler.messages[:main]
+    @test messages[2].type == :zone_end!
+
+    profiler = NullProfiler()
+    @zone profiler begin
+        @test isnothing(@zone_repr(profiler, error("should not run")))
+    end
+
+end
+
 @testset "frame marking functions" begin
     profiler = TestProfiler()
     

@@ -188,3 +188,107 @@ macro zone(profiler, otherargs...)
         end
     end
 end
+
+"""
+    @zone_show profiler variable1 variable2 ...
+
+A convenience macro for displaying variable names and their values as text annotations in the current profiling zone.
+
+For each variable or expression passed, the macro generates a guarded call that only evaluates the expression and adds text when the zone is active. The macro is equivalent to writing:
+```julia
+zone_active(profiler) && zone_text!(profiler, "variable = \$(repr(variable))")
+```
+
+for each variable.
+
+# Examples
+
+```julia
+profiler = TracyProfiler()
+x = 42
+y = "hello"
+z = [1, 2, 3]
+
+@zone profiler name="computation" begin
+    # Show variable values in the zone
+    @zone_show profiler x y z
+    # This adds three text lines to the zone:
+    # "x = 42"
+    # "y = \"hello\""
+    # "z = [1, 2, 3]"
+    
+    # ... rest of computation ...
+end
+
+@zone profiler name="debug" active=false begin
+    @zone_show profiler expensive_computation()
+    # expensive_computation() is NOT called when zone is inactive
+end
+
+```
+
+See also: [`@zone_repr`](@ref), [`zone_text!`](@ref), [`zone_active`](@ref), [`@zone`](@ref)
+"""
+macro zone_show(profiler, exs...)
+    blk = Expr(:block)
+    for ex in exs
+        ex_string = string(ex)
+        push!(blk.args, :(zone_active($(esc(profiler))) && zone_text!($(esc(profiler)), "$($(ex_string)) = $(repr($(esc(ex))))")))
+    end
+    push!(blk.args, :(nothing))
+    return blk
+end
+
+"""
+    @zone_repr profiler variable1 variable2 ...
+
+A convenience macro for displaying the repr of variables or expressions as text annotations in the current profiling zone.
+
+For each variable or expression passed, the macro generates a guarded call that only evaluates the expression and adds text when the zone is active. The macro is equivalent to writing:
+```julia
+zone_active(profiler) && zone_text!(profiler, repr(variable))
+```
+
+for each variable.
+
+This is similar to [`@zone_show`](@ref) but without the "variable = " prefix, displaying only the repr output.
+
+# Examples
+
+```julia
+profiler = TracyProfiler()
+x = 42
+y = "hello"
+z = [1, 2, 3]
+
+@zone profiler name="computation" begin
+    # Show repr of variable values in the zone
+    @zone_repr profiler x y z
+    # This adds three text lines to the zone:
+    # "42"
+    # "\"hello\""
+    # "[1, 2, 3]"
+    
+    # ... rest of computation ...
+end
+
+@zone profiler name="debug" active=false begin
+    @zone_repr profiler expensive_computation()
+    # expensive_computation() is NOT called when zone is inactive
+end
+
+```
+
+See also: [`@zone_show`](@ref), [`zone_text!`](@ref), [`zone_active`](@ref), [`@zone`](@ref)
+"""
+macro zone_repr(profiler, exs...)
+    blk = Expr(:block)
+    for ex in exs
+        push!(blk.args, :(zone_active($(esc(profiler))) && zone_text!($(esc(profiler)), repr($(esc(ex))))))
+    end
+    push!(blk.args, :(nothing))
+    return blk
+end
+
+
+
